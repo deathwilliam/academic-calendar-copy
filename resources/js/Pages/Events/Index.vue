@@ -65,7 +65,9 @@ const isAdmin = () => {
                         {{ $page.props.auth.user.role.toUpperCase() }}
                     </span>
                 </div>
+                <!-- Create button - Admin & Editor only -->
                 <Link
+                    v-if="['administrador', 'editor'].includes($page.props.auth.user.role)"
                     :href="route('events.create')"
                     class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
                 >
@@ -135,6 +137,7 @@ const isAdmin = () => {
                                         </button>
                                         <!-- Edit - Admin & Editor -->
                                         <Link
+                                            v-if="['administrador', 'editor'].includes($page.props.auth.user.role)"
                                             :href="route('events.edit', event.id)"
                                             class="px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded text-center"
                                         >

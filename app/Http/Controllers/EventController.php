@@ -50,6 +50,8 @@ class EventController extends Controller
     /**
      * Guardar un nuevo evento en la base de datos
      * 
+     * Solo los administradores pueden publicar eventos al crearlos.
+     * 
      * @param Request $request Datos del formulario
      * @return \Illuminate\Http\RedirectResponse Redirección a la lista de eventos
      */
@@ -64,6 +66,14 @@ class EventController extends Controller
             'type' => 'required|string|in:general,exam,holiday,meeting,deadline', // Tipo de evento
             'is_published' => 'boolean', // Estado de publicación
         ]);
+
+        // Solo los administradores pueden publicar eventos
+        if (isset($validated['is_published']) && $validated['is_published'] === true) {
+            if (auth()->user()->role !== 'administrador') {
+                // Forzar a false si no es administrador
+                $validated['is_published'] = false;
+            }
+        }
 
         // Crear el evento y asociarlo con el usuario actual
         $event = Event::create([
@@ -111,7 +121,7 @@ class EventController extends Controller
 
         // Verificar permiso para publicar/despublicar (solo admin)
         if (isset($validated['is_published']) && $validated['is_published'] != $event->is_published) {
-            if (auth()->user()->role !== 'admin') {
+            if (auth()->user()->role !== 'administrador') {
                 abort(403, 'Solo los administradores pueden publicar o despublicar eventos.');
             }
         }
@@ -134,7 +144,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         // Verificar que el usuario sea administrador
-        if (auth()->user()->role !== 'admin') {
+        if (auth()->user()->role !== 'administrador') {
             abort(403, 'Solo los administradores pueden eliminar eventos.');
         }
 
@@ -181,7 +191,7 @@ class EventController extends Controller
     public function revert(Event $event, $auditId)
     {
         // Verificar que el usuario sea administrador
-        if (auth()->user()->role !== 'admin') {
+        if (auth()->user()->role !== 'administrador') {
             abort(403, 'Solo los administradores pueden revertir eventos.');
         }
 

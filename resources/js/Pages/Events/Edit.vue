@@ -103,7 +103,8 @@ const submit = () => {
                                 <InputError class="mt-2" :message="form.errors.type" />
                             </div>
 
-                            <div class="flex items-center">
+                            <!-- Published checkbox - Admin Only -->
+                            <div v-if="$page.props.auth.user.role === 'administrador'" class="flex items-center">
                                 <input
                                     id="is_published"
                                     v-model="form.is_published"
