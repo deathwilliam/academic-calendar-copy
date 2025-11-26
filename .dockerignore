@@ -1,0 +1,13 @@
+/vendor
+/node_modules
+
+/public/hot
+/storage/*.key
+.env
+.git
+.github
+.phpunit.cache
+tests
+phpunit.xml
+README.md
+docs

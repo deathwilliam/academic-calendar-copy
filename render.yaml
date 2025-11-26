@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: academic-calendar
+    env: docker
+    region: oregon
+    plan: free
+    branch: main
+    numInstances: 1
+    healthCheckPath: /
+    envVars:
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: SESSION_DRIVER
+        value: file
+      - key: APP_URL
+        sync: false # User must set this after deploy
