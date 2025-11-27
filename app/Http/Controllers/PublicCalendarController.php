@@ -35,8 +35,8 @@ class PublicCalendarController extends Controller
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('title', 'like', "%{$searchTerm}%")
-                    ->orWhere('description', 'like', "%{$searchTerm}%");
+                $q->where('title', 'ilike', "%{$searchTerm}%")
+                    ->orWhere('description', 'ilike', "%{$searchTerm}%");
             });
         }
 
